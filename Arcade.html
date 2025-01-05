@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Games</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px black;
+        }
+
+        .game-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .game-item {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .game-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .play-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #ff8c00;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .play-button:hover {
+            background: #ff6000;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <h1>Arcade Games</h1>
+    <div class="game-list">
+        <div class="game-item">
+            <div class="game-title">Snake Xenzia</div>
+            <button class="play-button">Play Now</button>
+        </div>
+        <div class="game-item">
+            <div class="game-title">Pac-Man</div>
+            <button class="play-button" onclick="D:pacman.py">Play Now</button>
+        </div>
+        <div class="game-item">
+            <div class="game-title">Minesweeper</div>
+            <button class="play-button" >Play Now</button>
+        </div>
+    </div>
+    <footer>&copy; 2025 Arcade Games</footer>
+</body>
+</html>
