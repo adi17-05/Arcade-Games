@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Games</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        async function runGame(game) {
+            const response = await fetch('/run-game', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ game }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(`Game Output: ${result.output}`);
+            } else {
+                alert(`Error: ${result.error}`);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <br><br><br><br><br><br><br>
+        <h1>🎮 Arcade Games 🎮</h1>
+        <div class="game">
+            <h2>Pacman</h2>
+            <p>Guide Pacman through the maze, eat pellets, and avoid ghosts in this classic arcade game.</p>
+            <button onclick="runGame('pacman')">Play Pacman</button>
+        </div>
+        <div class="game">
+            <h2>Snake Xenia</h2>
+            <p>Control the snake to collect food and grow longer without crashing into yourself!</p>
+            <button onclick="runGame('snake')">Play Snake Xenia</button>
+        </div>
+        <div class="game">
+            <h2>Minesweeper</h2>
+            <p>Test your logic and uncover all the mines in this challenging puzzle game.</p>
+            <button onclick="runGame('minesweeper')">Play Minesweeper</button>
+        </div>
+    </div>
+</body>
+</html>
