@@ -6,7 +6,7 @@ import pygame
 import random
 import math
 
-# Initialize Pygame
+
 pygame.init()
 
 # Define colors
@@ -17,13 +17,12 @@ BLUE = (0, 0, 255)
 RED = (255,0,0)
 
 
-# Set up the game window
 window_width = 606
 window_height = 606
 window = pygame.display.set_mode((window_width, window_height))
 pygame.display.set_caption("Pacman Game")
 
-# Define wall positions
+
 walls = [
     [0, 0, 6, 600],
     [0, 0, 600, 6],
@@ -65,7 +64,7 @@ walls = [
     [360, 540, 126, 6],
 ]
 
-# Set up game variables
+
 clock = pygame.time.Clock()
 pacman_position = [window_width // 2, window_height // 2.5]
 pacman_radius = 15
@@ -74,21 +73,21 @@ reward_radius = 10
 rewards = []
 score = 0
 
-# Generate rewards
+
 num_rewards = 10
 for _ in range(num_rewards):
     x = random.randint(30, window_width - 30)
     y = random.randint(30, window_height - 30)
     rewards.append((x, y))
 
-# Game states
+
 GAME_STATE_PLAYING = "playing"
 GAME_STATE_WIN = "win"
 GAME_STATE_GAME_OVER = "game_over"
 
 game_state = GAME_STATE_PLAYING
 
-#Enemies class
+
 class Enemy:
     def __init__(self, x, y, radius, speed):
         self.x = x
@@ -98,11 +97,11 @@ class Enemy:
         self.direction = random.choice(['left', 'right', 'up', 'down'])
 
     def move(self):
-        # Temporary copy of the enemy's current position
+        
         temp_x = self.x
         temp_y = self.y
 
-        # Try to move in the current direction
+    
         if self.direction == 'left':
             temp_x -= self.speed
         elif self.direction == 'right':
@@ -112,16 +111,16 @@ class Enemy:
         elif self.direction == 'down':
             temp_y += self.speed
 
-        # Check for collision with walls in current direction
+        
         enemy_rect = pygame.Rect(temp_x - self.radius, temp_y - self.radius, 2 * self.radius, 2 * self.radius)
         for wall in walls:
             wall_rect = pygame.Rect(wall[0], wall[1], wall[2], wall[3])
             if enemy_rect.colliderect(wall_rect):
-                # If there is a collision, select a new random address
+                
                 self.direction = random.choice(['left', 'right', 'up', 'down'])
                 break
         else:
-            # No collision, update enemy position
+            
             self.x = temp_x
             self.y = temp_y
 
@@ -134,12 +133,11 @@ class Enemy:
 
         
 
-# Set up game variables
 
 enemies = []
 num_enemies = 4
 
-# Generate enemies
+
 for _ in range(num_enemies):
     valid_position = False
     while not valid_position:
@@ -154,17 +152,17 @@ for _ in range(num_enemies):
     enemies.append(Enemy(x, y, 10, 2))
 
 
-# Game loop
+
 running = True
 while running:
-    # Process events
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             
         elif event.type == pygame.KEYDOWN:
             if game_state == GAME_STATE_WIN and event.key == pygame.K_RETURN:
-                # Reset the game if in win state and Enter key is pressed
+                
                 rewards = []
                 for _ in range(num_rewards):
                     x = random.randint(30, window_width - 30)
@@ -175,16 +173,16 @@ while running:
 
     window.fill(BLACK)
 
-    # Draw walls
+    
     for wall in walls:
         pygame.draw.rect(window, BLUE, wall)
 
     if game_state == GAME_STATE_PLAYING:
-        # Draw rewards
+        
         for reward in rewards:
             pygame.draw.circle(window, WHITE, reward, reward_radius)
 
-        # Move Pacman
+        
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and pacman_position[0] > pacman_radius:
             pacman_position[0] -= pacman_speed
@@ -195,7 +193,7 @@ while running:
         if keys[pygame.K_DOWN] and pacman_position[1] < window_height - pacman_radius:
             pacman_position[1] += pacman_speed
 
-        # Check for collision with walls
+        
         pacman_rect = pygame.Rect(
             pacman_position[0] - pacman_radius,
             pacman_position[1] - pacman_radius,
@@ -206,7 +204,7 @@ while running:
         for wall in walls:
             wall_rect = pygame.Rect(wall[0], wall[1], wall[2], wall[3])
             if pacman_rect.colliderect(wall_rect):
-                # Pacman collided with a wall, revert its position
+                
                 if pacman_position[0] < wall_rect.left:
                     pacman_position[0] = wall_rect.left - pacman_radius
                 elif pacman_position[0] > wall_rect.right:
@@ -216,14 +214,14 @@ while running:
                 elif pacman_position[1] > wall_rect.bottom:
                     pacman_position[1] = wall_rect.bottom + pacman_radius
 
-        # Check for collision with rewards
+        
         for reward in rewards:
             reward_pos = pygame.Rect(reward[0], reward[1], 2 * reward_radius, 2 * reward_radius)
             if reward_pos.colliderect(pacman_rect):
                 rewards.remove(reward)
                 score += 1
 
-                # Check if all rewards are collected
+                
                 if score == num_rewards:
                     game_state = GAME_STATE_WIN
 
@@ -239,10 +237,10 @@ while running:
                 game_state = GAME_STATE_GAME_OVER
 
 
-        # Draw Pacman
+        
         pygame.draw.circle(window, YELLOW, pacman_position, pacman_radius)
 
-        # Draw score
+        
         score_text = f"Score: {score}"
         font = pygame.font.Font(None, 36)
         text = font.render(score_text, True, WHITE)
@@ -250,7 +248,7 @@ while running:
 
     elif game_state == GAME_STATE_WIN:
         pacman_position = [window_width // 2, window_height // 2.5]
-        # Draw win message
+        
         win_text = "You Win! Press Enter to play again."
         font = pygame.font.Font(None, 48)
         text = font.render(win_text, True, WHITE)
@@ -260,17 +258,17 @@ while running:
 
 
     elif game_state == GAME_STATE_GAME_OVER:
-        # Draw game over message
+    
         game_over_text = "Game over. Press Enter to play again."
         font = pygame.font.Font(None, 48)
         text = font.render(game_over_text, True, WHITE)
         text_rect = text.get_rect(center=(window_width // 2, window_height // 2))
         window.blit(text, text_rect)
 
-        # Check if Enter key is pressed to restart the game
+        
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
-            # Reset game variables
+        
             pacman_position = [window_width // 2, window_height // 2.5]
             score = 0
             enemies = []
@@ -287,21 +285,21 @@ while running:
                                 break
                 enemies.append(Enemy(x, y, 10, 2))
 
-            # Reset rewards
+            
             rewards = []
             for _ in range(num_rewards):
                 x = random.randint(30, window_width - 30)
                 y = random.randint(30, window_height - 30)
                 rewards.append((x, y))
 
-            # Reset game state
+            
             game_state = GAME_STATE_PLAYING
 
-    # Update the window
+    
     pygame.display.flip()
 
-    # Limit the frame rate
+    
     clock.tick(60)
 
-# Quit the game
+
 pygame.quit()

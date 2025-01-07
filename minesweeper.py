@@ -7,17 +7,17 @@ import pygame
 import random
 import sys
 
-# Initialize Pygame
+
 pygame.init()
 
-# Constants
+
 GRID_SIZE = 10
 TILE_SIZE = 40
 MINE_COUNT = 15
 WIDTH, HEIGHT = GRID_SIZE * TILE_SIZE, GRID_SIZE * TILE_SIZE
 FPS = 10
 
-# Colors
+
 WHITE = (255, 255, 255)
 GRAY = (200, 200, 200)
 GREEN = (0, 255, 0)
@@ -26,14 +26,14 @@ BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-# Fonts
+
 FONT = pygame.font.SysFont("Arial", 24)
 
-# Create the screen
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minesweeper")
 
-# Tile Class to represent each cell on the grid
+
 class Tile:
     def __init__(self, x, y):
         self.x = x
@@ -55,11 +55,10 @@ class Tile:
     def set_neighbors(self, count):
         self.neighboring_mines = count
 
-# Function to initialize the grid
+
 def initialize_grid():
     grid = [[Tile(x, y) for y in range(GRID_SIZE)] for x in range(GRID_SIZE)]
     
-    # Place mines randomly
     mines_placed = 0
     while mines_placed < MINE_COUNT:
         x = random.randint(0, GRID_SIZE - 1)
@@ -68,11 +67,11 @@ def initialize_grid():
             grid[x][y].set_mine()
             mines_placed += 1
 
-    # Set neighbors for each tile
+
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
             if not grid[x][y].is_mine:
-                # Count neighboring mines
+                
                 count = 0
                 for dx in range(-1, 2):
                     for dy in range(-1, 2):
@@ -83,7 +82,7 @@ def initialize_grid():
 
     return grid
 
-# Function to draw the grid
+
 def draw_grid(grid):
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
@@ -106,7 +105,7 @@ def draw_grid(grid):
                 pygame.draw.line(screen, BLUE, rect.topleft, rect.bottomright, 2)
                 pygame.draw.line(screen, BLUE, rect.bottomleft, rect.topright, 2)
 
-# Function to reveal the neighboring tiles (flood fill effect)
+
 def reveal_neighbors(grid, x, y):
     if grid[x][y].neighboring_mines == 0:
         for dx in range(-1, 2):
@@ -118,7 +117,7 @@ def reveal_neighbors(grid, x, y):
                         if grid[nx][ny].neighboring_mines == 0:
                             reveal_neighbors(grid, nx, ny)
 
-# Function to check if the game is over (either win or lose)
+
 def check_game_over(grid):
     for x in range(GRID_SIZE):
         for y in range(GRID_SIZE):
@@ -126,7 +125,7 @@ def check_game_over(grid):
                 return False  # The game is not over yet
     return True  # All non-mine tiles are revealed, the game is won
 
-# Main game loop
+
 def main():
     grid = initialize_grid()
     clock = pygame.time.Clock()
@@ -157,7 +156,7 @@ def main():
                 y //= TILE_SIZE
                 tile = grid[x][y]
 
-                if event.button == 1:  # Left click
+                if event.button == 1:  
                     if tile.is_mine:
                         game_over = True
                     else:
@@ -166,12 +165,12 @@ def main():
                         if check_game_over(grid):
                             game_over = True
                             win = True
-                elif event.button == 3:  # Right click (flag tile)
+                elif event.button == 3:  
                     tile.toggle_flag()
 
         pygame.display.update()
         clock.tick(FPS)
 
-# Start the game
+
 if __name__ == "__main__":
     main()
